@@ -1,6 +1,12 @@
 // lib/main.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:grup/bindings/auth_binding.dart';
+import 'package:grup/bindings/course_binding.dart';
+import 'package:grup/bindings/main_screen_binding.dart';
+import 'package:grup/bindings/menu_binding.dart';
+import 'package:grup/views/main_screen.dart';
 import 'config/app_constants.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
@@ -9,6 +15,17 @@ import 'translations/fr_FR.dart';
 import 'bindings/home_binding.dart';
 
 void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // Log the error to the console
+    FlutterError.dumpErrorToConsole(details);
+
+    // Optionally, log the error to an external service (e.g., Firebase Crashlytics, Sentry)
+    if (kDebugMode) {
+      print('------------------- ERRORS ----------------');
+      print(details);
+      print('------------------- ERRORS ----------------');
+    }
+  };
   runApp(MyApp());
 }
 
@@ -19,25 +36,25 @@ class MyApp extends StatelessWidget {
       title: AppConstants.appTitle,
       initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
-      initialBinding: HomeBinding(),  // Can initialize global services here if needed
+      initialBinding: AuthBinding(),  // Can initialize global services here if needed
       theme: ThemeData(
         primaryColor: AppConstants.primaryColor,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           color: AppConstants.primaryColor,
           elevation: 0,
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
         ),
-        buttonTheme: ButtonThemeData(
+        buttonTheme: const ButtonThemeData(
           buttonColor: AppConstants.primaryColor,
           textTheme: ButtonTextTheme.primary,
         ),
       ),
       debugShowCheckedModeBanner: false,
-      locale: Locale(AppConstants.defaultLanguage),  // Default language
-      fallbackLocale: Locale('en', 'US'),  // Fallback if translation is missing
+      locale: const Locale(AppConstants.defaultLanguage),  // Default language
+      fallbackLocale: const Locale('en', 'US'),  // Fallback if translation is missing
       translations: MyTranslations(),  // Load translations
-      navigatorKey: Get.key,  // For GetX navigation
+      navigatorKey: Get.key,
     );
   }
 }

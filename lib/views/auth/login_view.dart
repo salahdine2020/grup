@@ -9,11 +9,16 @@ import '../../config/app_constants.dart';  // Import AppConstants
 class LoginView extends StatelessWidget {
   final AuthController _authController = Get.find<AuthController>();
   final _formKey = GlobalKey<FormState>();
+  final appbarTitle = "Hot";
+  LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppConstants.primaryColor,  // Use primary color from AppConstants
+      appBar: AppBar(
+        title: Text(appbarTitle),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -24,11 +29,11 @@ class LoginView extends StatelessWidget {
               'assets/images/logo.png',  // Path to the PNG logo
               height: 150,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
 
             // Phone number input field
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -45,7 +50,7 @@ class LoginView extends StatelessWidget {
                     child: TextFormField(
                       controller: _authController.emailController,
                       validator: Validators.validateEmail,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Votre numéro de téléphone',
                       ),
