@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grup/views/compte/compte_view.dart';
-import 'package:grup/views/course/course_view.dart';
-import 'package:grup/views/menu/menu_view.dart';
+import 'package:grup/views/resturant_pages/compte/compte_view.dart';
+import 'package:grup/views/resturant_pages/course/course_view.dart';
+import 'package:grup/views/resturant_pages/menu/menu_view.dart';
+import 'package:grup/views/resturant_pages/order/order_view.dart';
 import '../../config/app_constants.dart';
-import '../controllres/bottom_nav_controller.dart';
-import '../controllres/main_screen_controller.dart';
-import 'order/order_view.dart';
+import '../controllres/resturant_controller/bottom_nav_controller.dart';
+import '../controllres/resturant_controller/main_screen_controller.dart';
 
 class MainScreen extends StatelessWidget {
   final BottomNavController navController = Get.put(BottomNavController());
@@ -16,7 +16,7 @@ class MainScreen extends StatelessWidget {
 
 
   final List<Widget> pages = [
-    OrderScreen(),
+    OrderView(),
     CourseView(),
     MenuView(),
     CompteView(),

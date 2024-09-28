@@ -12,5 +12,10 @@ class AppRoutes {
   static const String compte = '/compte';
   static const String mainview = '/mainview';
 
+  // New routes for client and delivery
+  static const client = '/client';
+  static const delivery = '/delivery';
+  static const cardOrder = '/cardorder';
+
 
 }

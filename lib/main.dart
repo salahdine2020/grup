@@ -2,17 +2,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grup/bindings/auth_binding.dart';
-import 'package:grup/bindings/course_binding.dart';
-import 'package:grup/bindings/main_screen_binding.dart';
-import 'package:grup/bindings/menu_binding.dart';
+import 'package:grup/bindings/client_binding/searchrestaurant_binding.dart';
+import 'package:grup/bindings/resturant_bindings/auth_binding.dart';
+import 'package:grup/bindings/client_binding/client_binding.dart';
 import 'package:grup/views/main_screen.dart';
 import 'config/app_constants.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'translations/en_US.dart';
 import 'translations/fr_FR.dart';
-import 'bindings/home_binding.dart';
 
 void main() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -34,9 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: AppConstants.appTitle,
-      initialRoute: AppRoutes.login,
-      getPages: AppPages.pages,
-      initialBinding: AuthBinding(),  // Can initialize global services here if needed
+      initialRoute: AppRoutes.login,//AppRoutes.login, // AppRoutes.client
+      getPages: AppPages.pages,//AppPages.pages,
+      initialBinding: AuthBinding(),//AuthBinding(), // SearchRestaurantBinding()  // Can initialize global services here if needed
       theme: ThemeData(
         primaryColor: AppConstants.primaryColor,
         scaffoldBackgroundColor: Colors.white,

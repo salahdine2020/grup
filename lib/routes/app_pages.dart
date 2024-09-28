@@ -1,23 +1,29 @@
 // lib/routes/app_pages.dart
 import 'package:get/get.dart';
-import 'package:grup/bindings/compte_binding.dart';
-import 'package:grup/bindings/course_binding.dart';
-import 'package:grup/bindings/main_screen_binding.dart';
-import 'package:grup/bindings/menu_binding.dart';
-import 'package:grup/views/compte/compte_view.dart';
-import 'package:grup/views/course/course_view.dart';
+import 'package:grup/bindings/client_binding/client_binding.dart';
+import 'package:grup/bindings/delivery_binding/delivery_binding.dart';
+import 'package:grup/bindings/resturant_bindings/main_screen_binding.dart';
+import 'package:grup/views/clients_pages/clientview/client_view.dart';
+import 'package:grup/views/delivery_pages/delivery_view/delivery_view.dart';
 import 'package:grup/views/main_screen.dart';
-import '../views/home/home_view.dart';
-import '../views/auth/login_view.dart';
-import '../views/auth/signup_view.dart';
-import '../views/cart/cart_view.dart';
-import '../views/cart/checkout_view.dart';
-import '../views/menu/menu_view.dart';
-import '../views/order/order_view.dart';
-import '../bindings/home_binding.dart';
-import '../bindings/auth_binding.dart';
-import '../bindings/cart_binding.dart';
-import '../bindings/order_binding.dart';
+import '../bindings/client_binding/searchrestaurant_binding.dart';
+import '../bindings/resturant_bindings/compte_binding.dart';
+import '../bindings/resturant_bindings/course_binding.dart';
+import '../bindings/resturant_bindings/home_binding.dart';
+import '../bindings/resturant_bindings/auth_binding.dart';
+import '../bindings/resturant_bindings/cart_binding.dart';
+import '../bindings/resturant_bindings/menu_binding.dart';
+import '../bindings/resturant_bindings/order_binding.dart';
+import '../views/clients_pages/resturant_card/resturant_card.dart';
+import '../views/resturant_pages/auth/login_view.dart';
+import '../views/resturant_pages/auth/signup_view.dart';
+import '../views/resturant_pages/cart/cart_view.dart';
+import '../views/resturant_pages/cart/checkout_view.dart';
+import '../views/resturant_pages/compte/compte_view.dart';
+import '../views/resturant_pages/course/course_view.dart';
+import '../views/resturant_pages/home/home_view.dart';
+import '../views/resturant_pages/menu/menu_view.dart';
+import '../views/resturant_pages/order/order_view.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -49,7 +55,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.order,
-      page: () => OrderScreen(),
+      page: () => OrderView(),
       binding: OrderBinding(),
     ),
     // ----------------------------
@@ -72,6 +78,22 @@ class AppPages {
       name: AppRoutes.mainview,
       page: () => MainScreen(),
       binding: MainScreenBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.client,
+      page: () => ClientView(),
+      binding: ClientBinding(), //ClientBinding(), // SearchRestaurantBinding
+    ),
+    GetPage(
+      name: AppRoutes.delivery,
+      page: () => const DeliveryView(),
+      binding: DeliveryBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.cardOrder,
+      page: () => CardToOrderScreen(),
+      binding: CartBinding(),  // Apply the binding here
     ),
   ];
 }

@@ -1,7 +1,8 @@
-// lib/controllers/auth_controller.dart
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../services/auth_service.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
+import '../routes/app_routes.dart';
 import '../utils/custom_snackbar.dart';
 
 class AuthController extends GetxController {
@@ -9,46 +10,43 @@ class AuthController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  // Mock data to simulate account types
+  final Map<String, String> mockUsers = {
+    "restaurant@example.com": "restaurant",
+    "client@example.com": "client",
+    "delivery@example.com": "delivery"
+  };
+
+  // Simulate login method
   void login() async {
     isLoading(true);
-    try {
-      var response = await Get.find<AuthService>().login(
-        emailController.text,
-        passwordController.text,
-      );
-      if (response.statusCode == 200) {
-        // Handle success, store token, navigate to home
-        showCustomSnackbar("Success", "Login successful");
-        Get.offAllNamed('/home');
-      } else {
-        // Show error message
-        showCustomSnackbar("Error", "Login failed", isError: true);
-      }
-    } catch (e) {
-      showCustomSnackbar("Error", "An error occurred", isError: true);
-    } finally {
-      isLoading(false);
-    }
-  }
+    await Future.delayed(const Duration(seconds: 2));  // Simulate network delay
 
-  void signup() async {
-    isLoading(true);
-    try {
-      var response = await Get.find<AuthService>().signup(
-        emailController.text,
-        passwordController.text,
-      );
-      if (response.statusCode == 200) {
-        showCustomSnackbar("Success", "Signup successful");
-        Get.offAllNamed('/home');
-      } else {
-        showCustomSnackbar("Error", "Signup failed", isError: true);
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    // Mock user authentication and type checking
+    if (mockUsers.containsKey(email) && password == "password123") {
+      String accountType = mockUsers[email]!;
+
+      switch (accountType) {
+        case "restaurant":
+          Get.offAllNamed(AppRoutes.order);  // Navigate to restaurant's order screen
+          break;
+        case "client":
+          Get.offAllNamed(AppRoutes.client);  // Navigate to client's screen
+          break;
+        case "delivery":
+          Get.offAllNamed(AppRoutes.delivery);  // Navigate to delivery's screen
+          break;
+        default:
+          showCustomSnackbar("Error", "Account type not recognized", isError: true);
       }
-    } catch (e) {
-      showCustomSnackbar("Error", "An error occurred", isError: true);
-    } finally {
-      isLoading(false);
+    } else {
+      showCustomSnackbar("Error", "Invalid email or password", isError: true);
     }
+
+    isLoading(false);
   }
 
   @override
