@@ -2,6 +2,7 @@ import 'dart:ui'; // Required for the blur effect
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grup/controllres/client_controller/order_controller.dart';
 import 'package:grup/views/clients_pages/resturant_card/widgets/resturantcard_widget.dart';
 import '../../../controllres/client_controller/carte_controller.dart';
 import '../../../models/client_models/fooditems_model.dart';
@@ -15,6 +16,7 @@ class CardToOrderScreen extends StatefulWidget {
 
 class _CardToOrderScreenState extends State<CardToOrderScreen> {
   final CartController cartController = Get.put(CartController());
+  final OrderController orderController = Get.put(OrderController());
 
   @override
   void initState() {
@@ -68,7 +70,7 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
     return totalPrice;
   }
 
-  void _showConfirmationDialog() {
+  void _showConfirmationDialog(double? totalPrice) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -83,13 +85,13 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Voulez-vous confirmer votre commande de : \$24.70',
+                  'Voulez-vous confirmer votre commande de : \$ $totalPrice',
                   style: GoogleFonts.itim(
                     textStyle: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        height: 18 / 15,
-                        color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      height: 18 / 15,
+                      color: Colors.white,
                     ),
                   ),
                   textAlign: TextAlign.center,
@@ -97,36 +99,45 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Center the buttons and keep them close
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 140, // Set the width of the button to 80
+                    width: 140,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add confirmation logic here
+                        // Save the new order to the list
+                        orderController.addOrder(
+                          "Hungry's Kitchen & Tap",  // Restaurant name
+                          "123 Main St, Anytown",   // Address
+                          "assets/images/restaurant_image.png",  // Image URL
+                          totalPrice ?? 0.0,  // Total Price
+                        );
+
+                        // Navigate to the "Course" screen (optional)
+                        //Get.to(() => CourseScreen());
+
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white, // Background color
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Small corner rounding for a rectangular shape
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: const Icon(Icons.check, color: Colors.black),
                     ),
                   ),
-                  const SizedBox(width: 18), // Spacing between the buttons
+                  const SizedBox(width: 18),
                   SizedBox(
-                    width: 140, // Set the width of the button to 80
+                    width: 140,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add cancel logic here
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red, // Background color
+                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Small corner rounding for a rectangular shape
+                          borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: const Icon(Icons.close, color: Colors.white),
@@ -134,7 +145,6 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
                   ),
                 ],
               ),
-
             ],
           ),
         );
@@ -145,7 +155,7 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         child: Column(
           children: [
             Padding(
@@ -209,14 +219,15 @@ class _CardToOrderScreenState extends State<CardToOrderScreen> {
       floatingActionButton: Obx(() => SizedBox(
             width: MediaQuery.of(context).size.width * .922,
             child: FloatingActionButton.extended(
-              onPressed: _showConfirmationDialog,
+              onPressed: () => _showConfirmationDialog(calculateTotalPrice()),
               backgroundColor: Colors.black,
               label: Text(
                 'Total: \$${calculateTotalPrice().toStringAsFixed(2)}',
                 style: const TextStyle(color: Colors.white),
               ),
             ),
-          )),
+          ),
+      ),
     );
   }
 }

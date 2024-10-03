@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
     OrderView(),
     CourseView(),
     MenuView(),
-    CompteView(),
+    CompteResturantView(),
   ];
 
   MainScreen({super.key});

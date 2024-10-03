@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../controllres/resturant_controller/compte_controller.dart';
 
-class CompteView extends StatelessWidget {
+class CompteResturantView extends StatelessWidget {
   final CompteController compteController = Get.find<CompteController>();
 
   @override

@@ -71,7 +71,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.compte,
-      page: () => CompteView(),
+      page: () => CompteResturantView(),
       binding: CompteBinding(),
     ),
     GetPage(

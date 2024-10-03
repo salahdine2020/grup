@@ -1,9 +1,14 @@
+
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // Import flutter_svg package
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grup/config/app_constants.dart';
-
+import 'package:grup/views/clients_pages/clientview/panier_view.dart';
+import 'package:grup/views/resturant_pages/compte/compte_view.dart';
 import '../resturant_card/resturant_card.dart';
+import 'compte_view.dart';
+import 'courseclient_view.dart';
 
 class ClientView extends StatefulWidget {
   const ClientView({super.key});
@@ -13,8 +18,86 @@ class ClientView extends StatefulWidget {
 }
 
 class _ClientViewState extends State<ClientView> {
+  int _selectedIndex = 0; // Track the selected tab index
+
+  // Define the different pages (views) for each bottom navigation item
+  final List<Widget> _pages = [
+    ClientHomeScreen(),  // The main home screen with restaurants
+    CourseClientScreen(),      // Course screen that displays the order
+    PanierView(),
+    CompteView(),
+  ];
+
+  // This function is called when a bottom navigation item is tapped
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,  // Display the screen based on the selected index
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        currentIndex: _selectedIndex,  // Track the selected tab
+        onTap: _onItemTapped,  // Update the selected index when a tab is tapped
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.string(
+              AppConstants.homeSvgIcon, // Home SVG string
+              height: 24,
+              width: 24,
+            ),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.string(
+              AppConstants.courseSvgIcon, // Course SVG string
+              height: 24,
+              width: 24,
+            ),
+            label: 'Course',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.string(
+              AppConstants.panierSvgIcon, // Panier SVG string
+              height: 24,
+              width: 24,
+            ),
+            label: 'Panier',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.string(
+              AppConstants.compteSvgIcon, // Compte SVG string
+              height: 24,
+              width: 24,
+            ),
+            label: 'Compte',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Home Screen Widget (this was previously inside ClientView)
+class ClientHomeScreen extends StatefulWidget {
+  const ClientHomeScreen({super.key});
+
+  @override
+  _ClientHomeScreenState createState() => _ClientHomeScreenState();
+}
+
+class _ClientHomeScreenState extends State<ClientHomeScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final List<Map<String, dynamic>> _restaurants =  [
+  final List<Map<String, dynamic>> _restaurants = [
     {
       'name': 'Hungry\'s Kitchen & Tap',
       'address': '2715 Ash Dr. San Jose',
@@ -67,133 +150,88 @@ class _ClientViewState extends State<ClientView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 68.0, right: 12, left: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 16.0),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  hintText: 'Recherchez votre restaurant...',
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  icon: Icon(Icons.search, color: Colors.black),
-                ),
-              ),
-            ),
-            // Horizontal List of Categories
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.15,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  categoryItem('Boisson', 'assets/images/boisson.png'),
-                  categoryItem('Fish', 'assets/images/fish.png'),
-                  categoryItem('Sandwich', 'assets/images/sandwich.png'),
-                  categoryItem('Hum', 'assets/images/hum.png'),
-                  categoryItem('Burger', 'assets/images/sandwich.png'),
-
-                  categoryItem('Boisson', 'assets/images/boisson.png'),
-                  categoryItem('Fish', 'assets/images/fish.png'),
-                  categoryItem('Sandwich', 'assets/images/sandwich.png'),
-                  categoryItem('Hum', 'assets/images/hum.png'),
-                  categoryItem('Burger', 'assets/images/sandwich.png'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Nearby Restaurants Text
-            const Row(
-              children: [
-                Icon(Icons.location_pin, color: Colors.red),
-                SizedBox(width: 8),
-                Text(
-                  'Les restaurants autour de vous',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 68.0, right: 12, left: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Search Field
+          Container(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
-
-            const SizedBox(height: 16),
-
-            // List of Restaurants
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredRestaurants.length,
-                itemBuilder: (context, index) {
-                  var restaurant = _filteredRestaurants[index];
-                  return restaurantCard(
-                    restaurant['name'],
-                    restaurant['address'],
-                    restaurant['location'],
-                    restaurant['hours'],
-                    restaurant['imagePath'],
-                    restaurant['isOpen'],
-                  );
-                },
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                hintText: 'Recherchez votre restaurant...',
+                hintStyle: TextStyle(color: Colors.grey),
+                border: InputBorder.none,
+                icon: Icon(Icons.search, color: Colors.black),
               ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.string(
-              AppConstants.homeSvgIcon, // Home SVG string
-              height: 24,
-              width: 24,
-            ),
-            label: 'Accueil',
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.string(
-              AppConstants.courseSvgIcon, // Course SVG string
-              height: 24,
-              width: 24,
+
+          // Horizontal List of Categories
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.15,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                categoryItem('Boisson', 'assets/images/boisson.png'),
+                categoryItem('Fish', 'assets/images/fish.png'),
+                categoryItem('Sandwich', 'assets/images/sandwich.png'),
+                categoryItem('Hum', 'assets/images/hum.png'),
+                categoryItem('Burger', 'assets/images/sandwich.png'),
+              ],
             ),
-            label: 'Course',
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.string(
-              AppConstants.panierSvgIcon, // Panier SVG string
-              height: 24,
-              width: 24,
-            ),
-            label: 'Panier',
+          const SizedBox(height: 16),
+
+          // Nearby Restaurants Text
+          const Row(
+            children: [
+              Icon(Icons.location_pin, color: Colors.red),
+              SizedBox(width: 8),
+              Text(
+                'Les restaurants autour de vous',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.string(
-              AppConstants.compteSvgIcon, // Compte SVG string
-              height: 24,
-              width: 24,
+
+          const SizedBox(height: 16),
+
+          // List of Restaurants
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredRestaurants.length,
+              itemBuilder: (context, index) {
+                var restaurant = _filteredRestaurants[index];
+                return restaurantCard(
+                  restaurant['name'],
+                  restaurant['address'],
+                  restaurant['location'],
+                  restaurant['hours'],
+                  restaurant['imagePath'],
+                  restaurant['isOpen'],
+                );
+              },
             ),
-            label: 'Compte',
           ),
         ],
       ),
@@ -248,7 +286,7 @@ class _ClientViewState extends State<ClientView> {
                     radius: 60,
                     backgroundColor: Colors.yellow, // Yellow background color for the circle
                     child: Center(
-                      child: Image.asset(imagePath)
+                      child: Image.asset(imagePath),
                     ),
                   ),
                 ),

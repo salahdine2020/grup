@@ -384,3 +384,5 @@ class CourseViewContent extends StatelessWidget {
     );
   }
 }
+
+

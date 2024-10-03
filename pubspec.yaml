@@ -40,6 +40,11 @@ dependencies:
   http:
   google_fonts:
   flutter_switch: ^0.3.2
+  google_maps_flutter:
+  geolocator:
+  google_places_flutter:
+  geocoding:
+  google_place:
 
 dev_dependencies:
   flutter_test:

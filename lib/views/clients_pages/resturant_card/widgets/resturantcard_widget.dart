@@ -10,9 +10,9 @@ class RestaurantCardWidget extends StatelessWidget {
   final CartController cartController = Get.put(CartController());
 
   RestaurantCardWidget({
-    Key? key,
+    super.key,
     required this.foodItem,
-  }) : super(key: key);
+  });
 
   // List of possible sizes
   final List<String> sizes = ['S', 'M', 'L', 'XL'];
